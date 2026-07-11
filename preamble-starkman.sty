@@ -13,6 +13,13 @@
 % xcolor: Define and use colors in text and graphics
 \RequirePackage{xcolor}
 
+% Make siunitx compatible with AASTeX by saving and restoring the tablenum
+% symbol -- https://tex.stackexchange.com/a/269074 
+\usepackage{savesym}
+\savesymbol{tablenum}
+\usepackage{siunitx}
+\restoresymbol{SIX}{tablenum}
+
 % ============================================================================
 % Load Specific Style Files
 % ============================================================================
