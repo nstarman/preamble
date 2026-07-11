@@ -7,6 +7,8 @@
 
 % graphicx: Include external graphics/images with \includegraphics
 \RequirePackage{graphicx}
+% lipsum: Generate Lorem ipsum placeholder text
+\RequirePackage{lipsum}
 % siunitx: Typeset SI units and numbers with proper spacing (e.g.,
 % \SI{5}{\meter})
 \RequirePackage{siunitx}
@@ -25,5 +27,12 @@
 % ============================================================================
 
 \RequirePackage{preamble-math-starkman}
+
+% ============================================================================
+% WIP
+% ============================================================================
+
+\newcommand{\todo}[1]{{\color{red} TODO: #1}}
+% Also use Lorem Ipsum placeholder text with \lipsum
 
 \endinput
