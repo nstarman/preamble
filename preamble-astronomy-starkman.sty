@@ -10,8 +10,13 @@
 %
 % - Basic Astronomy Units: Solar mass (\Msun), parsec, year
 % - Derived Astronomy Units: Milliarcsecond (\mas), kiloparsec (\kpc)
+% - Datasets and Surveys: Gaia (\gaia), EUCLID (\euclid)
+% - Glossary Acronyms: LoS, CoM, CDM, LCDM, LSST, SIDM
+% - Software References: GitHub (\github), JAX (\jax/\jax*), NumPy (\numpy/\numpy*), 
+%   SciPy (\scipy/\scipy*) with optional repository links (starred variant)
 %
 % All units integrate with siunitx for consistent formatting and spacing.
+% Software package commands support starred variants for linked repository icons.
 %
 
 % ============================================================================
@@ -54,5 +59,30 @@
 \newacronym{LCDM}{$\Lambda$CDM}{$\Lambda$ Cold Dark Matter}
 \newacronym{LSST}{LSST}{Legacy Survey of Space and Time}
 \newacronym{SIDM}{SIDM}{self-interacting dark matter}
+
+% ============================================================================
+% Software
+% ============================================================================
+
+% Version control and development platforms
+\newcommand{\github}{\textsl{GitHub}}
+
+% Scientific computing libraries and packages
+% Usage: \jax for name only, \jax* for name with link icon
+\makepackage{jax}{JAX}{https://github.com/google/jax}
+\makepackage{numpy}{NumPy}{https://github.com/numpy/numpy}
+\makepackage{scipy}{SciPy}{https://github.com/scipy/scipy}
+
+% `GalacticDynamics` packages
+\makepackage{unxt}{unxt}{https://github.com/GalacticDynamics/unxt}
+\makepackage{coordinax}{coordinax}{https://github.com/GalacticDynamics/coordinax}
+\makepackage{galax}{galax}{https://github.com/GalacticDynamics/galax}
+\makepackage{phasecurvefit}{phasecurvefit}{https://github.com/GalacticDynamics/phasecurvefit}
+\makepackage{quaxed}{quaxed}{https://github.com/GalacticDynamics/quaxed}
+\makepackage{quaxblocks}{quax-blocks}{https://github.com/GalacticDynamics/quax-blocks}
+
+% `nstarman` Packages
+\makepackage{quax}{quax}{https://github.com/nstarman/quax}
+
 
 \endinput

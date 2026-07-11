@@ -2,15 +2,33 @@
 \ProvidesPackage{preamble-base-starkman}[2026/07/01 Base commands for Starkman]
 
 % ============================================================================
+% Required Packages
+% ============================================================================
+
+\RequirePackage{hyperref}
+\RequirePackage{fontawesome}
+
+% ============================================================================
 % Description
 % ============================================================================
 %
-% This package provides base commands and utilities used across all Starkman
-% preamble packages. It includes common formatting commands and utilities that
-% support other specialized preamble modules.
+% This package provides foundational commands and utilities used across all
+% Starkman preamble packages. It serves as the base layer for the modular
+% preamble architecture, providing common formatting commands and utilities
+% that support specialized preamble modules (math, astronomy, etc.).
 %
+% CONTENTS:
 % - Acronym Formatting: \acronym command for consistently formatted acronyms
-%   (e.g., \acronym{NASA} renders in small caps)
+%   in small caps (e.g., \acronym{NASA})
+%
+% - Package References: \package command for rendering package names with
+%   optional hyperlinks (e.g., \package{siunitx}[https://ctan.org/pkg/siunitx])
+%
+% - Package Command Factory: \makepackage helper to generate starred package
+%   commands with built-in URLs (e.g., \makepackage{jax}{JAX}{url} creates
+%   \jax and \jax* with link support)
+%
+% This package requires hyperref and fontawesome for full functionality.
 %
 
 % ============================================================================
@@ -18,6 +36,27 @@
 % ============================================================================
 
 % \acronym - Format acronyms in small caps
+% Usage: \acronym{NASA} renders NASA in small caps
 \newcommand{\acronym}[1]{{\small{#1}}}
+
+% \package - Render package names with optional hyperlinks
+% Usage: \package{siunitx} renders in typewriter font
+%        \package{siunitx}[https://ctan.org/pkg/siunitx] adds a linked code icon
+\NewDocumentCommand{\package}{m o}{%
+  \texttt{#1}\;%
+  \IfNoValueTF{#2}{}{\href{#2}{\faCode}}%
+}
+
+% \makepackage - Helper to create starred package commands
+% E.g.: \makepackage{jax}{JAX}{https://github.com/google/jax}
+% Creates \jax (name only) and \jax* (name with link icon)
+\newcommand{\makepackage}[3]{%
+  \NewDocumentCommand{\csname #1\endcsname}{s}{%
+    \IfBooleanTF{##1}%
+      {\package{#2}[#3]}%
+      {\package{#2}}%
+  }%
+}
+
 
 \endinput
