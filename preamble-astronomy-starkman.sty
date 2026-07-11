@@ -1,0 +1,58 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{preamble-astronomy-starkman}[2026/07/01 Astronomy commands for Starkman]
+
+% ============================================================================
+% Description
+% ============================================================================
+%
+% This package provides astronomy-specific notation and commands for technical
+% writing in astrophysics and observational astronomy. It includes:
+%
+% - Basic Astronomy Units: Solar mass (\Msun), parsec, year
+% - Derived Astronomy Units: Milliarcsecond (\mas), kiloparsec (\kpc)
+%
+% All units integrate with siunitx for consistent formatting and spacing.
+%
+
+% ============================================================================
+% Required Packages
+% ============================================================================
+
+\RequirePackage{preamble-base-starkman}
+\RequirePackage{siunitx}
+\RequirePackage[acronym]{glossaries}
+
+% ============================================================================
+% Units
+% ============================================================================
+
+% Basic Astronomy Units
+\DeclareSIUnit\Msun{M_\odot}
+\DeclareSIUnit\parsec{pc}
+\DeclareSIUnit\year{yr}
+
+% Derived Astronomy Units
+\newcommand{\mas}{\unit{\milli\arcsecond}}
+\newcommand{\kpc}{\unit{\kilo\parsec}}
+
+% ============================================================================
+% Datasets
+% ============================================================================
+
+% Survey and mission names
+\newcommand{\gaia}{\textsl{Gaia}}
+\newcommand{\euclid}{\acronym{EUCLID}}
+
+% ============================================================================
+% Glossaries
+% ============================================================================
+
+% Common astronomy acronyms
+\newacronym{LoS}{LoS}{line-of-sight}
+\newacronym{CoM}{CoM}{center of mass}
+\newacronym{CDM}{CDM}{Cold Dark Matter}
+\newacronym{LCDM}{$\Lambda$CDM}{$\Lambda$ Cold Dark Matter}
+\newacronym{LSST}{LSST}{Legacy Survey of Space and Time}
+\newacronym{SIDM}{SIDM}{self-interacting dark matter}
+
+\endinput

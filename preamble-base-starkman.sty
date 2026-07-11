@@ -1,0 +1,23 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{preamble-base-starkman}[2026/07/01 Base commands for Starkman]
+
+% ============================================================================
+% Description
+% ============================================================================
+%
+% This package provides base commands and utilities used across all Starkman
+% preamble packages. It includes common formatting commands and utilities that
+% support other specialized preamble modules.
+%
+% - Acronym Formatting: \acronym command for consistently formatted acronyms
+%   (e.g., \acronym{NASA} renders in small caps)
+%
+
+% ============================================================================
+% Base Commands
+% ============================================================================
+
+% \acronym - Format acronyms in small caps
+\newcommand{\acronym}[1]{{\small{#1}}}
+
+\endinput
