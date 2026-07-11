@@ -1,0 +1,36 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{preamble-astronomy-starkman}[2026/07/01 Astronomy commands for Starkman]
+
+% ============================================================================
+% Description
+% ============================================================================
+%
+% This package provides astronomy-specific notation and commands for technical
+% writing in astrophysics and observational astronomy. It includes:
+%
+% - Basic Astronomy Units: Solar mass (\Msun), parsec, year
+% - Derived Astronomy Units: Milliarcsecond (\mas), kiloparsec (\kpc)
+%
+% All units integrate with siunitx for consistent formatting and spacing.
+%
+
+% ============================================================================
+% Required Packages
+% ============================================================================
+
+\RequirePackage{siunitx}
+
+% ============================================================================
+% Astronomy Commands
+% ============================================================================
+
+% Basic Astronomy Units
+\DeclareSIUnit\Msun{M_\odot}
+\DeclareSIUnit\parsec{pc}
+\DeclareSIUnit\year{yr}
+
+% Derived Astronomy Units
+\newcommand{\mas}{\unit{\milli\arcsecond}}
+\newcommand{\kpc}{\unit{\kilo\parsec}}
+
+\endinput
