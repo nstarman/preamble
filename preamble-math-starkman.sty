@@ -1,0 +1,155 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{preamble-math-starkman}[2026/07/01 Math commands for Starkman]
+
+% ============================================================================
+% Description
+% ============================================================================
+%
+% This package provides mathematical notation shortcuts and derivative/differential
+% commands for technical writing. It includes:
+%
+% - Math Font Shortcuts: Commands for calligraphic, bold, bold-symbol, and roman fonts
+%   (\mcal, \mbf, \mbs, \mrm)
+%
+% - Differential Notation: \dif and \pdif for ordinary and partial differentials
+%   with optional power specification (e.g., \dif<2>{x} -> d^2 x)
+%
+% - Derivative Commands: \deriv and \pderiv for ordinary and partial derivatives
+%   with three form variants:
+%   - No star: fraction form (df/dx)
+%   - Single star: fraction applied to argument (d/dx(f))
+%   - Double star: subscript form (d_x f)
+%   All support optional variable and power specifications
+%
+
+% ============================================================================
+% Required Packages
+% ============================================================================
+
+\RequirePackage{amsmath,amssymb}
+
+% ============================================================================
+% Math Shortcuts
+% ============================================================================
+
+% Math shortcuts
+% \mcal{X} - Calligraphic font: $\mathcal{ABCX}$
+\newcommand{\mcal}[1]{\mathcal{#1}}
+% \mbf{x} - Bold font: $\mathbf{abcx}$
+\newcommand{\mbf}[1]{\mathbf{#1}}
+% \mbs{x} - Bold symbol (works for Greek): $\boldsymbol{\alpha}$
+\newcommand{\mbs}[1]{\boldsymbol{#1}}
+% \mrm{x} - Roman (upright) font: $\mathrm{abc}$
+\newcommand{\mrm}[1]{\mathrm{#1}}
+
+% ============================================================================
+% Differential and Derivative Commands
+% ============================================================================
+
+% \dif - Differential notation with optional power
+% Usage: \dif{x} -> dx, \dif<2>{x} -> d^2 x
+% Options: 
+%   <power>: Optional power of the differential (e.g., <2> for d^2)
+%   {var}: Mandatory variable name
+\NewDocumentCommand {\dif} {d<> m} {
+    % #1: power of d, optional
+    % #2: variable
+    \IfNoValueTF{#1}
+    % No power specified, just use d{variable}
+    { \mathrm{d}{#2} }
+    % Power specified, use d^{power}{variable}
+    { \mathrm{d}^{#1}{#2} }
+}
+
+% \deriv - Ordinary derivative with multiple forms
+% Usage: \deriv{f} -> df/dx, \deriv*{f} -> d/dx(f), \deriv**{f} -> d_x f
+% Options:
+%   *: Fraction form d/dx applied to argument
+%   **: Subscript form d_x f
+%   [x]: Variable (default x)
+%   <n>: Power of derivative (e.g., <2> for d^2/dx^2)
+%   {f}: Function being differentiated
+\NewDocumentCommand {\deriv} {s t* O{x} d<> m} {
+    % #1: first star (single or part of double-star)
+    % #2: second star (true iff \deriv**...)
+    % #3: with respect to, optional, default x
+    % #4: power of the derivative, optional, given as <i>
+    % #5: the thing being differentiated
+    \IfBooleanTF{#2}
+    {%
+    % Double-star form: \deriv**[x]<i>{y} -> d_x^i y
+    \IfNoValueTF{#4}
+    { \mathrm{d}_{#3}{#5} }
+    { \mathrm{d}_{#3}^{#4}{#5} }%
+    }
+    {%
+    \IfBooleanTF{#1}
+    {%
+    % Single-star form: \deriv*[x]<i>{y} -> d^i/dx^i (y)
+    \IfNoValueTF{#4}
+    { \frac{\mathrm{d}}{\dif{#3}}\left({#5}\right) }
+    { \frac{\dif<#4>{}}{\dif{#3}^{#4}}\left({#5}\right) }%
+    }
+    {%
+    % No-star form: \deriv[x]<i>{y} -> d^i y/dx^i
+    \IfNoValueTF{#4}
+    { \frac{\dif{#5}}{\dif{#3}} }
+    { \frac{\dif<{#4}>{#5}}{\dif{#3}^{#4}} }%
+    }%
+    }%
+}
+
+% \pdif - Partial differential notation with optional power
+% Usage: \pdif{x} -> ∂x, \pdif<2>{x} -> ∂^2 x
+% Options:
+%   <power>: Optional power of the partial (e.g., <2> for ∂^2)
+%   {var}: Mandatory variable name
+\NewDocumentCommand {\pdif} {d<> m} {
+    % #1: power of d, optional
+    % #2: variable
+    \IfNoValueTF{#1}
+    % No power specified, just use ∂{variable}
+    { \partial{#2} }
+    % Power specified, use ∂^{power}{variable}
+    { \partial^{#1}{#2} }
+}
+
+% \pderiv - Partial derivative with multiple forms
+% Usage: \pderiv{f} -> ∂f/∂x, \pderiv*{f} -> ∂/∂x(f), \pderiv**{f} -> ∂_x f
+% Options:
+%   *: Fraction form ∂/∂x applied to argument
+%   **: Subscript form ∂_x f
+%   [x]: Variable (default x)
+%   <n>: Power of derivative (e.g., <2> for ∂^2/∂x^2)
+%   {f}: Function being differentiated
+\NewDocumentCommand {\pderiv} {s t* O{x} d<> m} {
+    % #1: first star (single or part of double-star)
+    % #2: second star (true iff \deriv**...)
+    % #3: with respect to, optional, default x
+    % #4: power of the derivative, optional, given as <i>
+    % #5: the thing being differentiated
+    \IfBooleanTF{#2}
+    {%
+    % Double-star form: \deriv**[x]<i>{y} -> d_x^i y
+    \IfNoValueTF{#4}
+    { \partial_{#3}{#5} }
+    { \partial_{#3}^{#4}{#5} }%
+    }
+    {%
+    \IfBooleanTF{#1}
+    {%
+    % Single-star form: \deriv*[x]<i>{y} -> d^i/dx^i (y)
+    \IfNoValueTF{#4}
+    { \frac{\partial}{\pdif{#3}}\left({#5}\right) }
+    { \frac{\pdif<#4>{}}{\pdif{#3}^{#4}}\left({#5}\right) }%
+    }
+    {%
+    % No-star form: \deriv[x]<i>{y} -> d^i y/dx^i
+    \IfNoValueTF{#4}
+    { \frac{\pdif{#5}}{\pdif{#3}} }
+    { \frac{\pdif<{#4}>{#5}}{\pdif{#3}^{#4}} }%
+    }%
+    }%
+}
+
+\endinput
