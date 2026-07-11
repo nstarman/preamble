@@ -18,10 +18,11 @@
 % Required Packages
 % ============================================================================
 
+\RequirePackage{preamble-base-starkman}
 \RequirePackage{siunitx}
 
 % ============================================================================
-% Astronomy Commands
+% Units
 % ============================================================================
 
 % Basic Astronomy Units
@@ -32,5 +33,13 @@
 % Derived Astronomy Units
 \newcommand{\mas}{\unit{\milli\arcsecond}}
 \newcommand{\kpc}{\unit{\kilo\parsec}}
+
+% ============================================================================
+% Datasets
+% ============================================================================
+
+% Survey and mission names
+\newcommand{\gaia}{\textsl{Gaia}}
+\newcommand{\euclid}{\acronym{EUCLID}}
 
 \endinput

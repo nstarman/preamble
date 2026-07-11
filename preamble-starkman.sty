@@ -2,6 +2,40 @@
 \ProvidesPackage{preamble-starkman}[2026/07/01 Preamble for Starkman]
 
 % ============================================================================
+% Description
+% ============================================================================
+%
+% Comprehensive preamble package for Starkman providing a unified set of
+% LaTeX utilities for technical writing in astrophysics and observational
+% astronomy. This main package loads and coordinates specialized modules:
+%
+% CORE MODULES:
+% - preamble-base-starkman: Base commands and formatting utilities
+%   * Acronym formatting (\acronym) for consistent style
+%
+% - preamble-math-starkman: Mathematical notation and derivative commands
+%   * Math font shortcuts (\mcal, \mbf, \mbs, \mrm)
+%   * Differential notation (\dif, \pdif) with optional powers
+%   * Derivative operators (\deriv, \pderiv) with multiple forms
+%
+% - preamble-astronomy-starkman: Astronomy units and dataset names
+%   * SI units: Solar masses (\Msun), parsecs, years
+%   * Derived units: Milliarcseconds (\mas), kiloparsecs (\kpc)
+%   * Survey names: Gaia (\gaia), EUCLID (\euclid)
+%
+% STANDARD PACKAGES:
+% - graphicx: External graphics inclusion and manipulation
+% - siunitx: Proper SI unit formatting and number typesetting
+%   (includes AASTeX compatibility via savesym)
+% - xcolor: Color support for text and graphics
+% - lipsum: Lorem ipsum placeholder text generation
+%
+% USAGE:
+% Simply load with \usepackage{preamble-starkman} to get all modules and
+% utilities, or load individual modules directly for lighter dependencies.
+%
+
+% ============================================================================
 % Packages
 % ============================================================================
 
@@ -26,6 +60,7 @@
 % Load Specific Style Files
 % ============================================================================
 
+\RequirePackage{preamble-base-starkman}
 \RequirePackage{preamble-math-starkman}
 \RequirePackage{preamble-astronomy-starkman}
 
