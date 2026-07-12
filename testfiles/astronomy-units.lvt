@@ -1,0 +1,38 @@
+% ============================================================================
+% astronomy-units.lvt -- units, survey names, and glossary acronyms
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-astronomy-starkman}
+
+\begin{document}
+\START
+
+\TEST{derived units are defined in terms of siunitx}{
+  \show\mas
+  \show\kpc
+}
+
+\TEST{survey and mission names}{
+  \show\gaia
+  \show\euclid
+  \show\github
+}
+
+\TEST{glossary acronyms expand to their long forms}{
+  \TYPE{LoS  = \glsentrytext{LoS} / \glsentrylong{LoS}}
+  \TYPE{CoM  = \glsentrytext{CoM} / \glsentrylong{CoM}}
+  \TYPE{CDM  = \glsentrytext{CDM} / \glsentrylong{CDM}}
+  \TYPE{LSST = \glsentrytext{LSST} / \glsentrylong{LSST}}
+  \TYPE{SIDM = \glsentrytext{SIDM} / \glsentrylong{SIDM}}
+}
+
+\TEST{the astronomy module pulls in the base module}{
+  % \acronym comes from preamble-base-starkman; \euclid is built on it, so a
+  % broken dependency would surface here rather than at some user's first build.
+  \show\acronym
+  \show\package
+}
+
+\END

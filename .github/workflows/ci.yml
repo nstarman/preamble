@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Both jobs run inside the same TeX Live image.  Pin it: the golden .tlg files
+# record TeX's log output, which changes between TeX Live releases, so the image
+# used here and the one used by `make goldens' must agree.  When you bump this,
+# regenerate the goldens (`make goldens') in the same commit.
+env:
+  TEXLIVE_IMAGE: texlive/texlive:latest
+
+jobs:
+  test:
+    name: l3build check
+    runs-on: ubuntu-latest
+    container: texlive/texlive:latest   # keep in sync with TEXLIVE_IMAGE above
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run the test suite
+        run: l3build check
+
+      # On failure, the .diff files show exactly which log lines changed:
+      # far more useful than scrolling the job output.
+      - name: Upload failure diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: l3build-diffs
+          path: build/test/*.diff
+          if-no-files-found: ignore
+
+  links:
+    name: End-to-end link check
+    runs-on: ubuntu-latest
+    container: texlive/texlive:latest   # keep in sync with TEXLIVE_IMAGE above
+    steps:
+      - uses: actions/checkout@v4
+
+      # Asserts on the /URI annotations in a real PDF -- i.e. on the links a
+      # reader would actually click, rather than on what \package hands \href.
+      - name: Check the links in the compiled PDF
+        run: ./tools/check-links.sh

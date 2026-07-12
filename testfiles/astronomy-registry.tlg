@@ -1,0 +1,52 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: scientific computing packages
+============================================================
+REGISTERED=[https://pypi.org/project/astropy]
+REGISTERED=[https://pypi.org/project/jax]
+REGISTERED=[https://pypi.org/project/matplotlib]
+REGISTERED=[https://pypi.org/project/numpy]
+REGISTERED=[https://pypi.org/project/scipy]
+============================================================
+============================================================
+TEST 2: GalacticDynamics packages
+============================================================
+REGISTERED=[https://pypi.org/project/unxt]
+REGISTERED=[https://pypi.org/project/coordinax]
+REGISTERED=[https://pypi.org/project/galax]
+REGISTERED=[https://pypi.org/project/phasecurvefit]
+REGISTERED=[https://pypi.org/project/quaxed]
+REGISTERED=[https://pypi.org/project/quax-blocks]
+============================================================
+============================================================
+TEST 3: nstarman packages
+============================================================
+REGISTERED=[https://pypi.org/project/quax]
+============================================================
+============================================================
+TEST 4: supporting utility packages
+============================================================
+REGISTERED=[https://pypi.org/project/dataclassish]
+REGISTERED=[https://pypi.org/project/diffraxtra]
+REGISTERED=[https://pypi.org/project/is-annotated]
+REGISTERED=[https://pypi.org/project/jaxmore]
+REGISTERED=[https://pypi.org/project/oncequinox]
+REGISTERED=[https://pypi.org/project/zeroth]
+============================================================
+============================================================
+TEST 5: every link goes to PyPI, and the starred form uses it
+============================================================
+NAME=[galax]
+LINK=[https://pypi.org/project/galax]
+NAME=[is\_annotated]
+LINK=[https://pypi.org/project/is-annotated]
+============================================================
+============================================================
+TEST 6: the module defines no package control sequences (no clash surface)
+============================================================
+galax=UNDEFINED
+quax=UNDEFINED
+jax=UNDEFINED
+numpy=UNDEFINED
+============================================================

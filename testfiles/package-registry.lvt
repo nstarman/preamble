@@ -1,0 +1,50 @@
+% ============================================================================
+% package-registry.lvt -- \registerpackagename semantics
+% ============================================================================
+% Asserts against the lookup table itself (via \SHOWLINK and \prop_show:N),
+% independently of how \package renders it.
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-base-starkman}
+\input{instrument}
+
+\begin{document}
+\START
+
+\TEST{a registered name resolves to its URL}{
+  \registerpackagename{alpha}{https://alpha.example}
+  \SHOWLINK{alpha}
+}
+
+\TEST{an unregistered name is a miss (no residue, no error)}{
+  \SHOWLINK{nosuchpackage}
+}
+
+\TEST{re-registering a name overwrites the old URL}{
+  \registerpackagename{beta}{https://old.example}
+  \SHOWLINK{beta}
+  \registerpackagename{beta}{https://new.example}
+  \SHOWLINK{beta}
+}
+
+\TEST{the key is the displayed name, which need not match the PyPI slug}{
+  % `JAX' is displayed; `jax' is the PyPI project.  Only the former is a key.
+  \registerpackagename{JAX}{https://pypi.org/project/jax}
+  \SHOWLINK{JAX}
+  \SHOWLINK{jax}
+}
+
+\TEST{registration is global: it escapes the group it was made in}{
+  \begingroup
+    \registerpackagename{gamma}{https://gamma.example}
+  \endgroup
+  \SHOWLINK{gamma}
+}
+
+\TEST{the whole table: keys, values, and nothing else}{
+  \SHOWREGISTRY
+}
+
+\END

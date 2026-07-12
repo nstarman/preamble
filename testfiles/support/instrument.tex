@@ -1,0 +1,50 @@
+% ============================================================================
+% instrument.tex -- test harness for the \package renderer
+% ============================================================================
+%
+% \package typesets its output; a test can only assert on what reaches the log.
+% Rather than dump boxes (unreadable, and sensitive to fonts and TeX Live
+% version), we replace the three leaves of the renderer with log markers:
+%
+%   \texttt{NAME}      -> NAME=[...]
+%   \href{URL}{ICON}   -> LINK=[...]
+%   \faCode            -> (nothing)
+%
+% So `\package*{JAX}' logs
+%
+%   NAME=[JAX]
+%   LINK=[https://pypi.org/project/jax]
+%
+% and an unregistered `\package*{nosuch}' logs a NAME line and *no* LINK line,
+% which is precisely the fallback behaviour we want to pin down.  A wrong URL,
+% a missing link, or a link that should not be there is then a one-line diff in
+% the golden .tlg.
+%
+% Load this AFTER preamble-base-starkman (it redefines that package's leaves),
+% and only in tests: it destroys the real rendering.
+% ============================================================================
+
+\renewcommand{\texttt}[1]{\typeout{NAME=[#1]}}
+\renewcommand{\href}[2]{\typeout{LINK=[#1]}}
+\renewcommand{\faCode}{}
+
+% Show the resolved link for NAME without going through the renderer at all,
+% i.e. assert directly against the registry rather than against \package.
+% Logs `MISS=[NAME]' when NAME is not registered.
+% NB: these must be defined here, in expl3 syntax, rather than written inline in
+% a test: the body of \TEST is tokenized under normal catcodes, where `_' and
+% `:' are not letters and \prop_get:NnNTF is not a control sequence.
+\ExplSyntaxOn
+
+\NewDocumentCommand \SHOWLINK { m }
+  {
+    \prop_get:NnNTF \g_starkman_packagelink_prop {#1} \l_tmpa_tl
+      { \typeout { REGISTERED=[\l_tmpa_tl] } }
+      { \typeout { MISS=[#1] } }
+  }
+
+% Dump the entire lookup table, keys and values.
+\NewDocumentCommand \SHOWREGISTRY { }
+  { \prop_show:N \g_starkman_packagelink_prop }
+
+\ExplSyntaxOff

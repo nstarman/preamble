@@ -198,6 +198,19 @@ The \gls{CoM} of the system % center of mass
 The \gls{LCDM} model        % Λ Cold Dark Matter
 ```
 
+## Tests
+
+```sh
+make test     # l3build unit tests + the end-to-end link check
+```
+
+Two layers, both run in CI on every push:
+
+- **`l3build` unit tests** (`testfiles/*.lvt`) — the macro behaviour: the full `\package` resolution matrix, registry semantics, escaping rules, aliases, the derivative forms, and a smoke test that loads everything and uses every command.
+- **An end-to-end link check** (`tools/check-links.sh`) — compiles a document and diffs every `/URI` in the resulting PDF against `tests/links/expected-uris.txt`, so the links a reader actually clicks are pinned down, hyperref included.
+
+Both are golden-file based: an intended change means running `make goldens` and reviewing the diff. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## License
 
 See LICENSE file for details.

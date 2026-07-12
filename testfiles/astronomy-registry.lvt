@@ -1,0 +1,61 @@
+% ============================================================================
+% astronomy-registry.lvt -- the shipped package-link registry
+% ============================================================================
+% Every name the astronomy module registers, and the URL it resolves to.  This
+% is the test that fails loudly if a link is changed, dropped, or misspelled:
+% the golden below is, in effect, the checked-in list of every link the module
+% will ever put in a document.
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-astronomy-starkman}
+\input{instrument}
+
+\begin{document}
+\START
+
+\TEST{scientific computing packages}{
+  \SHOWLINK{Astropy}
+  \SHOWLINK{JAX}
+  \SHOWLINK{Matplotlib}
+  \SHOWLINK{NumPy}
+  \SHOWLINK{SciPy}
+}
+
+\TEST{GalacticDynamics packages}{
+  \SHOWLINK{unxt}
+  \SHOWLINK{coordinax}
+  \SHOWLINK{galax}
+  \SHOWLINK{phasecurvefit}
+  \SHOWLINK{quaxed}
+  \SHOWLINK{quax-blocks}
+}
+
+\TEST{nstarman packages}{
+  \SHOWLINK{quax}
+}
+
+\TEST{supporting utility packages}{
+  \SHOWLINK{dataclassish}
+  \SHOWLINK{diffraxtra}
+  \SHOWLINK{is\_annotated}
+  \SHOWLINK{jaxmore}
+  \SHOWLINK{oncequinox}
+  \SHOWLINK{zeroth}
+}
+
+\TEST{every link goes to PyPI, and the starred form uses it}{
+  \package*{galax}
+  \package*{is\_annotated}
+}
+
+\TEST{the module defines no package control sequences (no clash surface)}{
+  % Registering a name must NOT define \galax, \quax, \jax, ...
+  \ifdefined\galax \TYPE{galax=DEFINED}\else\TYPE{galax=UNDEFINED}\fi
+  \ifdefined\quax  \TYPE{quax=DEFINED}\else\TYPE{quax=UNDEFINED}\fi
+  \ifdefined\jax   \TYPE{jax=DEFINED}\else\TYPE{jax=UNDEFINED}\fi
+  \ifdefined\numpy \TYPE{numpy=DEFINED}\else\TYPE{numpy=UNDEFINED}\fi
+}
+
+\END

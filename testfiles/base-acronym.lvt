@@ -1,0 +1,26 @@
+% ============================================================================
+% base-acronym.lvt -- \acronym
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-base-starkman}
+
+\begin{document}
+\START
+
+\TEST{\string\acronym\ is defined as expected}{
+  \show\acronym
+}
+
+\TEST{the size change is confined to a group (it does not leak)}{
+  % \acronym wraps its content in an extra brace group precisely so that the
+  % font size does not escape.  If that group is ever dropped, the box below
+  % changes size and this test's dump changes with it.
+  \showboxbreadth=3
+  \showboxdepth=1
+  \setbox0=\hbox{\acronym{NASA}X}
+  \showbox0
+}
+
+\END

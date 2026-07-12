@@ -1,0 +1,185 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: font shortcuts
+============================================================
+> \mcal=\long macro:
+#1->\mathcal {#1}.
+<argument>  \show \mcal 
+                        \show \mbf \show \mbs \show \mrm 
+l. ...}
+> \mbf=\long macro:
+#1->\mathbf {#1}.
+<argument>  \show \mcal \show \mbf 
+                                   \show \mbs \show \mrm 
+l. ...}
+> \mbs=\long macro:
+#1->\boldsymbol {#1}.
+<argument>  \show \mcal \show \mbf \show \mbs 
+                                              \show \mrm 
+l. ...}
+> \mrm=\long macro:
+#1->\mathrm {#1}.
+<argument> ...al \show \mbf \show \mbs \show \mrm 
+l. ...}
+============================================================
+============================================================
+TEST 2: argument specifications of the differential commands
+============================================================
+> \dif=\protected macro:
+->\__cmd_start:nNNnnn {d<> m}\dif  \dif code {\__cmd_grab_D:w <>\__cmd_grab_m_1:w }{}{}.
+<argument>  \show \dif 
+                       \show \pdif 
+l. ...}
+> \pdif=\protected macro:
+->\__cmd_start:nNNnnn {d<> m}\pdif  \pdif code {\__cmd_grab_D:w <>\__cmd_grab_m_1:w }{}{}.
+<argument>  \show \dif \show \pdif 
+l. ...}
+============================================================
+============================================================
+TEST 3: argument specifications of the derivative commands
+============================================================
+> \deriv=\protected macro:
+->\__cmd_start:nNNnnn {s t* O{x} d<> m}\deriv  \deriv code {\__cmd_grab_t:w *\__cmd_grab_t:w *\__cmd_grab_D:w []\__cmd_grab_D:w <>\__cmd_grab_m_1:w }{\c_novalue_tl \c_novalue_tl {\prg_do_nothing: x}\c_novalue_tl \c_novalue_tl }{}.
+<argument>  \show \deriv 
+                         \show \pderiv 
+l. ...}
+> \pderiv=\protected macro:
+->\__cmd_start:nNNnnn {s t* O{x} d<> m}\pderiv  \pderiv code {\__cmd_grab_t:w *\__cmd_grab_t:w *\__cmd_grab_D:w []\__cmd_grab_D:w <>\__cmd_grab_m_1:w }{\c_novalue_tl \c_novalue_tl {\prg_do_nothing: x}\c_novalue_tl \c_novalue_tl }{}.
+<argument>  \show \deriv \show \pderiv 
+l. ...}
+============================================================
+============================================================
+TEST 4: other math commands
+============================================================
+> \pdf=\long macro:
+->\textsl {pdf}.
+<argument>  \show \pdf 
+                       \show \vec 
+l. ...}
+> \vec=\long macro:
+#1->\ensuremath {\mbs {#1}}.
+<argument>  \show \pdf \show \vec 
+l. ...}
+============================================================
+============================================================
+TEST 5: \string \dif : plain and with a power
+============================================================
+> \box...=
+\hbox(6.94444+0.0)x11.27084
+.\mathon
+.\OT1/cmr/m/n/10 d
+.\OML/cmm/m/it/10 x
+.\mathoff
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+> \box...=
+\hbox(8.14003+0.0)x15.75697
+.\mathon
+.\OT1/cmr/m/n/10 d
+.\hbox(4.51111+0.0)x4.48613, shifted -3.62892
+..\OT1/cmr/m/n/7 2
+.\OML/cmm/m/it/10 x
+.\mathoff
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+============================================================
+============================================================
+TEST 6: \string \deriv : fraction form (df/dx)
+============================================================
+> \box...=
+\hbox(9.32217+3.44841)x11.50076
+.\mathon
+.\hbox(9.32217+3.44841)x11.50076
+..\hbox(9.32217+3.44841)x11.50076 []
+.\mathoff
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+============================================================
+============================================================
+TEST 7: \string \deriv *: fraction applied to the argument (d/dx(f))
+============================================================
+> \box...=
+\hbox(8.79842+3.44841)x26.7681
+.\mathon
+.\hbox(8.79842+3.44841)x11.35141
+..\hbox(8.79842+3.44841)x11.35141 []
+.\glue(\thinmuskip) 1.66663
+.\hbox(7.5+2.5)x13.75006
+..\hbox(7.5+2.5)x3.8889 []
+..\OML/cmm/m/it/10 f
+..\kern1.0764
+..\hbox(7.5+2.5)x3.8889 []
+.\mathoff
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+============================================================
+============================================================
+TEST 8: \string \deriv **: subscript form (d_x f), no fraction bar
+============================================================
+> \box...=
+\hbox(6.94444+1.94444)x16.56256
+.\mathon
+.\OT1/cmr/m/n/10 d
+.\hbox(3.01389+0.0)x5.03473, shifted 1.49998
+..\OML/cmm/m/it/7 x
+.\OML/cmm/m/it/10 f
+.\kern1.0764
+.etc.
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+============================================================
+============================================================
+TEST 9: \string \deriv : explicit variable and power
+============================================================
+> \box...=
+\hbox(10.70108+4.80951)x15.4036
+.\mathon
+.\hbox(10.70108+4.80951)x15.4036
+..\hbox(10.70108+4.80951)x15.4036 []
+.\mathoff
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+============================================================
+============================================================
+TEST 10: \string \pdif \ and \string \pderiv \ mirror their ordinary counterparts
+============================================================
+> \box...=
+\hbox(6.94444+1.94444)x11.12617
+.\mathon
+.\OML/cmm/m/it/10 @
+.\kern0.55554
+.\OML/cmm/m/it/10 y
+.\kern0.35878
+.etc.
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+> \box...=
+\hbox(9.32217+3.44841)x11.78511
+.\mathon
+.\hbox(9.32217+3.44841)x11.78511
+..\hbox(9.32217+3.44841)x11.78511 []
+.\mathoff
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+> \box...=
+\hbox(6.94444+1.94444)x16.31602
+.\mathon
+.\OML/cmm/m/it/10 @
+.\hbox(3.01389+0.0)x5.03473, shifted 1.49998
+..\OML/cmm/m/it/7 x
+.\OML/cmm/m/it/10 f
+.\kern1.0764
+.etc.
+! OK.
+\SHOWMATH ... =2 \setbox 0=\hbox {$#1$}\showbox 0 
+l. ...}
+============================================================

@@ -1,0 +1,11 @@
+# l3build scratch space: unpacked sources, test runs, and failure diffs.
+build/
+
+# LaTeX build droppings, should any escape into the working tree.
+*.aux
+*.log
+*.out
+*.pdf
+*.glo
+*.gls
+*.ist
