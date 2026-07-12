@@ -25,10 +25,13 @@
 \hbadness=10000
 \vbadness=10000
 
-% Warm up the math fonts, whose first-use "Trying to load font information"
-% lines are an artefact of ordering rather than of behaviour.
+% Warm up the math fonts and the fontawesome font, whose first-use "Trying to
+% load font information" lines are an artefact of ordering rather than of
+% behaviour: they would otherwise attach themselves to whichever test happens
+% to come first.  \OMIT ... \TIMO keeps them out of the golden.
 \OMIT
 \setbox0=\hbox{$\mcal{A}\mbs{\alpha}\frac{1}{2}$}
+\setbox0=\hbox{\faCode}
 \TIMO
 
 \TEST{base commands render}{
