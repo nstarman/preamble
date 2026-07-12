@@ -1,0 +1,37 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: derived units are defined in terms of siunitx
+============================================================
+BODY=[\unit {\milli \arcsecond }]
+BODY=[\unit {\kilo \parsec }]
+============================================================
+============================================================
+TEST 2: survey and mission names
+============================================================
+BODY=[\textsl {Gaia}]
+BODY=[\acronym {EUCLID}]
+BODY=[\textsl {GitHub}]
+============================================================
+============================================================
+TEST 3: glossary acronyms expand to their long forms
+============================================================
+LoS = LoS / line-of-sight
+CoM = CoM / center of mass
+CDM = CDM / Cold Dark Matter
+LSST = LSST / Legacy Survey of Space and Time
+SIDM = SIDM / self-interacting dark matter
+============================================================
+============================================================
+TEST 4: the astronomy module pulls in the base module
+============================================================
+> \acronym=\long macro:
+#1->{\small {#1}}.
+<argument>  \show \acronym 
+                           \show \package 
+l. ...}
+> \package=\protected macro:
+->\__cmd_start:nNNnnn {smo}\package  \package code {\__cmd_grab_t:w *\__cmd_grab_m_1:w \__cmd_grab_D:w []}{}{}.
+<argument>  \show \acronym \show \package 
+l. ...}
+============================================================

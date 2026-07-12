@@ -1,0 +1,51 @@
+% ============================================================================
+% package-render.lvt -- the \package resolution matrix
+% ============================================================================
+% The heart of the package: which URL (if any) ends up in the link, for each
+% combination of star and optional argument.  See support/instrument.tex for
+% how NAME=[...] / LINK=[...] markers are produced.
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-base-starkman}
+\input{instrument}
+
+\registerpackagename{siunitx}{https://ctan.org/pkg/siunitx}
+
+\begin{document}
+\START
+
+% ---------------------------------------------------------------- unstarred --
+\TEST{bare name: no link}{
+  \package{siunitx}
+}
+
+\TEST{explicit URL: that URL is used}{
+  \package{siunitx}[https://explicit.example]
+}
+
+\TEST{explicit URL for an unregistered name: still linked}{
+  \package{nosuchpackage}[https://explicit.example]
+}
+
+% ------------------------------------------------------------------ starred --
+\TEST{starred + registered: the registered URL}{
+  \package*{siunitx}
+}
+
+\TEST{starred + UNregistered: falls back to the bare name, no link}{
+  \package*{nosuchpackage}
+}
+
+% ------------------------------------------------------------- precedence ----
+\TEST{starred + explicit URL: the explicit URL wins over the registry}{
+  \package*{siunitx}[https://override.example]
+}
+
+% ---------------------------------------------------------------- key rules --
+\TEST{lookup is case-sensitive: `SIUNITX' is not `siunitx'}{
+  \package*{SIUNITX}
+}
+
+\END

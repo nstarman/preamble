@@ -1,0 +1,63 @@
+% ============================================================================
+% smoke-all.lvt -- load everything, use everything
+% ============================================================================
+% No instrumentation and no assertions: this test loads the umbrella package
+% (and so every module, plus graphicx / siunitx / xcolor / glossaries /
+% hyperref / fontawesome and the AASTeX siunitx workaround) and exercises every
+% public macro for real.  Any LaTeX error, missing dependency, or load-order
+% breakage lands in the log and shows up as a diff against the golden.
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-starkman}
+
+\registerpackagename{siunitx}{https://ctan.org/pkg/siunitx}
+\makepackagealias{mysciypy}{SciPy-alias}{https://pypi.org/project/scipy}
+
+\begin{document}
+\START
+
+% This test is about errors, not aesthetics.  Without these, an overfull \hbox
+% would dump its entire contents (fonts, glyphs, kerns) into the golden, making
+% it enormous and sensitive to font metrics.  Real errors are still logged.
+\hfuzz=\maxdimen
+\hbadness=10000
+\vbadness=10000
+
+% Warm up the math fonts and the fontawesome font, whose first-use "Trying to
+% load font information" lines are an artefact of ordering rather than of
+% behaviour: they would otherwise attach themselves to whichever test happens
+% to come first.  \OMIT ... \TIMO keeps them out of the golden.
+\OMIT
+\setbox0=\hbox{$\mcal{A}\mbs{\alpha}\frac{1}{2}$}
+\setbox0=\hbox{\faCode}
+\TIMO
+
+\TEST{base commands render}{
+  \acronym{NASA}
+  \package{siunitx}
+  \package{siunitx}[https://ctan.org/pkg/siunitx]
+  \package*{siunitx}
+  \package*{unregistered}
+  \mysciypy
+  \mysciypy*
+}
+
+\TEST{math commands render}{
+  $\mcal{M} \mbf{v} \mbs{\alpha} \mrm{d}$
+  $\dif{x} \quad \dif<2>{x} \quad \pdif{y} \quad \pdif<3>{y}$
+  $\deriv{f} \quad \deriv*{f} \quad \deriv**{f} \quad \deriv[y]<2>{f}$
+  $\pderiv{f} \quad \pderiv*{f} \quad \pderiv**{f} \quad \pderiv[y]<2>{f}$
+  The \pdf{} of $\vec{v}$.
+}
+
+\TEST{astronomy commands render}{
+  \SI{1}{\Msun} \quad \SI{10}{\parsec} \quad \SI{3}{\year}
+  \mas \quad \kpc
+  \gaia \quad \euclid \quad \github
+  \gls{LoS} \gls{CoM} \gls{CDM} \gls{LCDM} \gls{LSST} \gls{SIDM}
+  \package*{galax} \package*{JAX} \package*{is\_annotated}
+}
+
+\END

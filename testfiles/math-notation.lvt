@@ -1,0 +1,87 @@
+% ============================================================================
+% math-notation.lvt -- differentials and derivatives
+% ============================================================================
+% These commands are branchy: \deriv and \pderiv each choose between three
+% forms (fraction / fraction-applied / subscript) and an optional power.  The
+% argument specification is where a regression would most likely hide, so we
+% pin the definitions down with \SHOW, and then check that each documented
+% form still *builds* the structure it advertises by dumping a shallow box:
+% the fraction forms contain a rule (the fraction bar), the subscript form
+% does not.
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-math-starkman}
+\input{inspect}   % \SHOWBODY: see support/inspect.tex
+
+% Shallow dumps: we care about structure (is there a fraction?), not glyphs.
+\newcommand{\SHOWMATH}[1]{%
+  \showboxbreadth=5 %
+  \showboxdepth=2 %
+  \setbox0=\hbox{$#1$}%
+  \showbox0 %
+}
+
+\begin{document}
+\START
+
+% Warm up the math fonts before any assertion: the first box in math mode logs
+% "Trying to load font information for ..." lines, which are an artefact of
+% ordering rather than behaviour.  \OMIT ... \TIMO keeps them out of the golden.
+\OMIT
+\setbox0=\hbox{$\mcal{A}\mbs{\alpha}\frac{1}{2}$}
+\TIMO
+
+% ------------------------------------------------------------- definitions --
+\TEST{font shortcuts}{
+  \show\mcal
+  \show\mbf
+  \show\mbs
+  \show\mrm
+}
+
+\TEST{argument specifications of the differential commands}{
+  \show\dif
+  \show\pdif
+}
+
+\TEST{argument specifications of the derivative commands}{
+  \show\deriv
+  \show\pderiv
+}
+
+\TEST{other math commands}{
+  \SHOWBODY\pdf   % parameterless: \show would print the kernel-dependent \long
+  \show\vec       % takes an argument, so \show is stable here
+}
+
+% ------------------------------------------------------------------- forms --
+\TEST{\string\dif: plain and with a power}{
+  \SHOWMATH{\dif{x}}
+  \SHOWMATH{\dif<2>{x}}
+}
+
+\TEST{\string\deriv: fraction form (df/dx)}{
+  \SHOWMATH{\deriv{f}}
+}
+
+\TEST{\string\deriv*: fraction applied to the argument (d/dx(f))}{
+  \SHOWMATH{\deriv*{f}}
+}
+
+\TEST{\string\deriv**: subscript form (d_x f), no fraction bar}{
+  \SHOWMATH{\deriv**{f}}
+}
+
+\TEST{\string\deriv: explicit variable and power}{
+  \SHOWMATH{\deriv[y]<2>{f}}
+}
+
+\TEST{\string\pdif\ and \string\pderiv\ mirror their ordinary counterparts}{
+  \SHOWMATH{\pdif{y}}
+  \SHOWMATH{\pderiv{f}}
+  \SHOWMATH{\pderiv**{f}}
+}
+
+\END

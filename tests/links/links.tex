@@ -1,0 +1,54 @@
+% ============================================================================
+% links.tex -- end-to-end link check
+% ============================================================================
+% Compiled by tools/check-links.sh, which extracts every /URI annotation from
+% the resulting PDF and diffs it against tests/links/expected-uris.txt.
+%
+% The l3build tests assert on what \package hands to \href.  This one asserts
+% on what actually lands in the PDF -- the only thing a reader ever clicks --
+% and so also covers hyperref's own handling of the URL.
+%
+% Every name registered by the astronomy module must appear here.
+% ============================================================================
+\documentclass{article}
+
+% Uncompressed output, so that /URI (...) strings are plain text in the PDF and
+% can be extracted with grep alone -- no PDF library needed anywhere in CI.
+\pdfcompresslevel=0
+\pdfobjcompresslevel=0
+
+\usepackage{preamble-starkman}
+
+\begin{document}
+
+% Scientific computing packages
+\package*{Astropy}
+\package*{JAX}
+\package*{Matplotlib}
+\package*{NumPy}
+\package*{SciPy}
+
+% GalacticDynamics packages
+\package*{unxt}
+\package*{coordinax}
+\package*{galax}
+\package*{phasecurvefit}
+\package*{quaxed}
+\package*{quax-blocks}
+
+% nstarman packages
+\package*{quax}
+
+% Supporting utility packages
+\package*{dataclassish}
+\package*{diffraxtra}
+\package*{is\_annotated}
+\package*{jaxmore}
+\package*{oncequinox}
+\package*{zeroth}
+
+% An explicit URL, and an unregistered name: the latter must produce NO link.
+\package{siunitx}[https://ctan.org/pkg/siunitx]
+\package*{definitely-not-registered}
+
+\end{document}

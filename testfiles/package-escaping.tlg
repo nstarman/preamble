@@ -1,0 +1,29 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: `_' and `~' in a URL survive storage and retrieval
+============================================================
+REGISTERED=[https://example.test/a_b~c/d_e]
+NAME=[tricky]
+LINK=[https://example.test/a_b~c/d_e]
+============================================================
+============================================================
+TEST 2: an escaped underscore in a name: registration and lookup agree
+============================================================
+REGISTERED=[https://pypi.org/project/is-annotated]
+NAME=[is\_annotated]
+LINK=[https://pypi.org/project/is-annotated]
+============================================================
+============================================================
+TEST 3: a hyphenated name needs no escaping
+============================================================
+REGISTERED=[https://pypi.org/project/quax-blocks]
+NAME=[quax-blocks]
+LINK=[https://pypi.org/project/quax-blocks]
+============================================================
+============================================================
+TEST 4: an inline URL with `_' and `~' also reaches \string \href \ intact
+============================================================
+NAME=[inline]
+LINK=[https://example.test/a_b~c/d_e]
+============================================================

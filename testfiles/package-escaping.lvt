@@ -1,0 +1,50 @@
+% ============================================================================
+% package-escaping.lvt -- awkward characters in names and URLs
+% ============================================================================
+% Two different rules, easy to conflate:
+%
+%   * URLs are detokenized on storage, so `_' and `~' need no escaping and must
+%     survive the round trip byte-for-byte.
+%   * The displayed NAME is ordinary text, so an underscore in it must be
+%     written `\_' -- both at registration and at the call site.  The registry
+%     keys on the escaped form, so the two agree.
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-base-starkman}
+\input{instrument}
+
+% A URL with an underscore and a tilde: the characters most likely to be
+% mangled by catcode changes on the way into and out of the lookup table.
+\registerpackagename{tricky}{https://example.test/a_b~c/d_e}
+
+% A name whose underscore is escaped, linking to the hyphenated PyPI project.
+\registerpackagename{is\_annotated}{https://pypi.org/project/is-annotated}
+
+% A hyphenated name needs no escaping at all.
+\registerpackagename{quax-blocks}{https://pypi.org/project/quax-blocks}
+
+\begin{document}
+\START
+
+\TEST{`_' and `~' in a URL survive storage and retrieval}{
+  \SHOWLINK{tricky}
+  \package*{tricky}
+}
+
+\TEST{an escaped underscore in a name: registration and lookup agree}{
+  \SHOWLINK{is\_annotated}
+  \package*{is\_annotated}
+}
+
+\TEST{a hyphenated name needs no escaping}{
+  \SHOWLINK{quax-blocks}
+  \package*{quax-blocks}
+}
+
+\TEST{an inline URL with `_' and `~' also reaches \string\href\ intact}{
+  \package{inline}[https://example.test/a_b~c/d_e]
+}
+
+\END

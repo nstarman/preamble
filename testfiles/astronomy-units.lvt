@@ -1,0 +1,41 @@
+% ============================================================================
+% astronomy-units.lvt -- units, survey names, and glossary acronyms
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-astronomy-starkman}
+\input{inspect}   % \SHOWBODY: see support/inspect.tex
+
+\begin{document}
+\START
+
+% \SHOWBODY, not \show: these are parameterless, and \show would also print the
+% \long prefix, which the LaTeX kernel stopped adding in 2025-11.
+\TEST{derived units are defined in terms of siunitx}{
+  \SHOWBODY\mas
+  \SHOWBODY\kpc
+}
+
+\TEST{survey and mission names}{
+  \SHOWBODY\gaia
+  \SHOWBODY\euclid
+  \SHOWBODY\github
+}
+
+\TEST{glossary acronyms expand to their long forms}{
+  \TYPE{LoS  = \glsentrytext{LoS} / \glsentrylong{LoS}}
+  \TYPE{CoM  = \glsentrytext{CoM} / \glsentrylong{CoM}}
+  \TYPE{CDM  = \glsentrytext{CDM} / \glsentrylong{CDM}}
+  \TYPE{LSST = \glsentrytext{LSST} / \glsentrylong{LSST}}
+  \TYPE{SIDM = \glsentrytext{SIDM} / \glsentrylong{SIDM}}
+}
+
+\TEST{the astronomy module pulls in the base module}{
+  % \acronym comes from preamble-base-starkman; \euclid is built on it, so a
+  % broken dependency would surface here rather than at some user's first build.
+  \show\acronym
+  \show\package
+}
+
+\END

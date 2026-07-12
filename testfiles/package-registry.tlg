@@ -1,0 +1,40 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: a registered name resolves to its URL
+============================================================
+REGISTERED=[https://alpha.example]
+============================================================
+============================================================
+TEST 2: an unregistered name is a miss (no residue, no error)
+============================================================
+MISS=[nosuchpackage]
+============================================================
+============================================================
+TEST 3: re-registering a name overwrites the old URL
+============================================================
+REGISTERED=[https://old.example]
+REGISTERED=[https://new.example]
+============================================================
+============================================================
+TEST 4: the key is the displayed name, which need not match the PyPI slug
+============================================================
+REGISTERED=[https://pypi.org/project/jax]
+MISS=[jax]
+============================================================
+============================================================
+TEST 5: registration is global: it escapes the group it was made in
+============================================================
+REGISTERED=[https://gamma.example]
+============================================================
+============================================================
+TEST 6: the whole table: keys, values, and nothing else
+============================================================
+The property list \g_starkman_packagelink_prop contains the pairs (without outer braces):
+>  {alpha}  =>  {https://alpha.example}
+>  {beta}  =>  {https://new.example}
+>  {JAX}  =>  {https://pypi.org/project/jax}
+>  {gamma}  =>  {https://gamma.example}.
+<recently read> }
+l. ...}
+============================================================

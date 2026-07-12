@@ -1,0 +1,44 @@
+% ============================================================================
+% package-alias.lvt -- \makepackagealias
+% ============================================================================
+% An alias must do two things: register NAME -> URL (so \package*{NAME} works
+% for it too), and define \cmd / \cmd* as shorthands for \package{NAME} and
+% \package*{NAME}.
+% ============================================================================
+\input{regression-test}
+
+\documentclass{article}
+\usepackage{preamble-base-starkman}
+\input{instrument}
+
+\makepackagealias{jax}{JAX}{https://pypi.org/project/jax}
+
+\begin{document}
+\START
+
+\TEST{the alias registers the name}{
+  \SHOWLINK{JAX}
+}
+
+\TEST{\string\jax\ is the unstarred form: name only}{
+  \jax
+}
+
+\TEST{\string\jax*\ is the starred form: name plus the registered link}{
+  \jax*
+}
+
+\TEST{the registered name is usable directly, without the alias}{
+  \package*{JAX}
+}
+
+\TEST{the alias keys on the displayed name, not the command name}{
+  % \makepackagealias{jax}{JAX}{...} registers `JAX', not `jax'.
+  \SHOWLINK{jax}
+}
+
+\TEST{an alias for a name with no clash is defined, not silently skipped}{
+  \ifdefined\jax \TYPE{DEFINED}\else\TYPE{UNDEFINED}\fi
+}
+
+\END

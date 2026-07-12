@@ -15,8 +15,9 @@ The preamble system consists of four main packages:
 1. **preamble-base-starkman.sty**
    - Base commands and formatting utilities shared across all modules
    - `\acronym{TEXT}` – Format acronyms in small caps
-   - `\package{NAME}[URL]` – Render package names with optional hyperlinks
-   - `\makepackage{cmd}{NAME}{URL}` – Factory to create starred package commands
+   - `\registerpackagename{NAME}{URL}` – Register a package's canonical link
+   - `\package{NAME}[URL]` – Render package names with optional hyperlinks; the starred form `\package*{NAME}` uses the registered link
+   - `\makepackagealias{cmd}{NAME}{URL}` – Register a name *and* define `\cmd` / `\cmd*` as a shorthand (use sparingly)
    - Dependencies: hyperref, fontawesome
 
 2. **preamble-math-starkman.sty**
@@ -34,6 +35,7 @@ The preamble system consists of four main packages:
    - Derived units: `\mas`, `\kpc`
    - Survey/mission names: `\gaia`, `\euclid`
    - Acronyms: `\gls{LoS}`, `\gls{CoM}`, `\gls{CDM}`, `\gls{LCDM}`
+   - Software: a registry of package names → PyPI project URLs (`\package*{galax}`, …), defining no new control sequences
    - Dependencies: preamble-base-starkman, siunitx, glossaries
 
 4. **preamble-starkman.sty** (Main Package)
@@ -70,17 +72,44 @@ This provides all utilities, standard packages, and features.
 \package{siunitx}           % siunitx in typewriter font
 \package{siunitx}[https://ctan.org/pkg/siunitx]  % with link icon
 
-% Package commands (created with \makepackage)
-\jax                        % JAX without link
-\jax*                       % JAX with link icon
-\numpy                      % NumPy without link
-\numpy*                     % NumPy with link icon
-\scipy                      % SciPy without link
-\scipy*                     % SciPy with link icon
+% Package references (registered link, written once in the preamble)
+\registerpackagename{siunitx}{https://ctan.org/pkg/siunitx}
+\package*{siunitx}          % siunitx with link icon, URL taken from the registry
+\package*{unregistered}     % no registered link -> just the name, unchanged
+\package*{siunitx}[https://example.com]  % an explicit [URL] always wins
 
-% Creating new package commands in your preamble:
-% \makepackage{cmdname}{DisplayName}{https://url.to.repo}
+% Packages registered by preamble-astronomy-starkman
+\package{JAX}               % JAX without link
+\package*{JAX}              % JAX with link icon
+\package*{NumPy}            % NumPy with link icon
+\package*{SciPy}            % SciPy with link icon
+
+% Registering your own in your preamble:
+% \registerpackagename{DisplayName}{https://pypi.org/project/name}
+
+% Or, if you really want a dedicated control sequence:
+% \makepackagealias{cmdname}{DisplayName}{URL}  % defines \cmdname and \cmdname*
 ```
+
+#### The package link registry
+
+`\registerpackagename{NAME}{URL}` stores `URL` in a global lookup table keyed on `NAME`, so a package's link is written down exactly once. Resolution order for `\package`:
+
+| Form | Link used |
+| --- | --- |
+| `\package{NAME}` | none – bare name |
+| `\package{NAME}[URL]` | the explicit `URL` |
+| `\package*{NAME}` | the URL registered for `NAME` |
+| `\package*{NAME}` (unregistered) | none – falls back silently to the bare name |
+| `\package*{NAME}[URL]` | the explicit `URL` (overrides the registry) |
+
+`\makepackagealias{cmd}{NAME}{URL}` registers `NAME → URL` *and* defines `\cmd` / `\cmd*` as a shorthand for `\package{NAME}` / `\package*{NAME}`.
+
+Use it sparingly. Every alias is a new control sequence that can collide with another package, the document class, or your own macros — and `\NewDocumentCommand` errors out if the name is already taken. Reserve it for the few packages you name so often that the saved keystrokes are worth the risk, and only for names you're confident are unclaimed. For everything else, register the name and write `\package*{NAME}` — which is why `preamble-astronomy-starkman` defines no aliases at all: it's `\package*{galax}`, not `\galax*`.
+
+URLs are detokenized when stored, so `_` and `~` (common in repository links) round-trip safely. Literal `%` and `#` must still be escaped as `\%` and `\#`, as anywhere else in LaTeX.
+
+The *name*, by contrast, is ordinary text: a `_` in it must be escaped (`\_`) both at registration and at the call site — `\registerpackagename{is\_annotated}{…}` is looked up by `\package*{is\_annotated}`.
 
 ### Math Commands
 
@@ -132,23 +161,33 @@ Position: \SI{100}{\mas}    % 100 mas
 Data from \gaia             % Gaia (italic)
 The \euclid{} mission       % EUCLID (acronym formatting)
 
-% Software packages (starred variants include repository links)
-\numpy(*)       % NumPy with optional link
+% Software packages: registered names, used via \package / \package*
+% (the starred form appends an icon linking to the package's PyPI page)
 
 % Scientific computing packages
-\jax(*)                     % JAX with optional link
-\scipy(*)                   % SciPy with optional link
+\package*{JAX}              % JAX with link
+\package*{NumPy}            % NumPy with link
+\package*{SciPy}            % SciPy with link
+\package{SciPy}             % ... or the bare name
 
 % GalacticDynamics packages
-\unxt(*)                    % unxt with optional link
-\coordinax(*)               % coordinax with optional link
-\galax(*)                   % galax with optional link
-\phasecurvefit(*)           % phasecurvefit with optional link
-\quaxed(*)                  % quaxed with optional link
-\quaxblocks(*)             % quax-blocks with optional link
+\package*{unxt}
+\package*{coordinax}
+\package*{galax}
+\package*{phasecurvefit}
+\package*{quaxed}
+\package*{quax-blocks}
 
 % nstarman packages
-\quax(*)                    % quax with optional link
+\package*{quax}
+
+% Supporting utility packages
+\package*{dataclassish}
+\package*{diffraxtra}
+\package*{is\_annotated}     % note the escaped underscore
+\package*{jaxmore}
+\package*{oncequinox}
+\package*{zeroth}
 
 Code at \github
 
@@ -158,6 +197,19 @@ The \gls{CoM} of the system % center of mass
 \gls{CDM} model             % Cold Dark Matter
 The \gls{LCDM} model        % Λ Cold Dark Matter
 ```
+
+## Tests
+
+```sh
+make test     # l3build unit tests + the end-to-end link check
+```
+
+Two layers, both run in CI on every push:
+
+- **`l3build` unit tests** (`testfiles/*.lvt`) — the macro behaviour: the full `\package` resolution matrix, registry semantics, escaping rules, aliases, the derivative forms, and a smoke test that loads everything and uses every command.
+- **An end-to-end link check** (`tools/check-links.sh`) — compiles a document and diffs every `/URI` in the resulting PDF against `tests/links/expected-uris.txt`, so the links a reader actually clicks are pinned down, hyperref included.
+
+Both are golden-file based: an intended change means running `make goldens` and reviewing the diff. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

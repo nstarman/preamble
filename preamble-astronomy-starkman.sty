@@ -12,11 +12,17 @@
 % - Derived Astronomy Units: Milliarcsecond (\mas), kiloparsec (\kpc)
 % - Datasets and Surveys: Gaia (\gaia), EUCLID (\euclid)
 % - Glossary Acronyms: LoS, CoM, CDM, LCDM, LSST, SIDM
-% - Software References: GitHub (\github), JAX (\jax/\jax*), NumPy (\numpy/\numpy*), 
-%   SciPy (\scipy/\scipy*) with optional repository links (starred variant)
+% - Software References: GitHub (\github), plus a registry of package names and
+%   their PyPI project URLs (JAX, NumPy, SciPy, the GalacticDynamics stack, ...)
 %
 % All units integrate with siunitx for consistent formatting and spacing.
-% Software package commands support starred variants for linked repository icons.
+%
+% Software packages are registered with \registerpackagename (from
+% preamble-base-starkman) rather than each being given its own control sequence:
+% write \package{JAX} for the bare name and \package*{JAX} for the name plus a
+% linked repository icon. Defining commands such as \jax, \galax or \quax would
+% risk clashing with other packages' control sequences, and with any macros a
+% document already defines; the registry has no such footprint.
 %
 
 % ============================================================================
@@ -67,22 +73,55 @@
 % Version control and development platforms
 \newcommand{\github}{\textsl{GitHub}}
 
+% Package link registry.
+% Each entry records a package's canonical URL, keyed on the name as it is
+% written in the text.  Usage:
+%   \package{JAX}   -> JAX (typewriter, no link)
+%   \package*{JAX}  -> JAX with a linked icon, URL from the registry
+% No new control sequences are created, so nothing here can clash with commands
+% defined by other packages or by the document itself.
+%
+% Links point at the PyPI project page rather than the source repository: PyPI
+% is the canonical distribution point (it is what a reader would `pip install`),
+% is stable under repository moves and renames, and always links onward to the
+% repository itself.
+%
+% NAMES vs URLs.  The registry key is the *displayed* name and need not match
+% the PyPI project name, which is lowercased and hyphenated: `JAX' ->
+% pypi.org/project/jax, `is\_annotated' -> pypi.org/project/is-annotated,
+% `quax-blocks' -> pypi.org/project/quax-blocks.  Register whichever spelling
+% you want to appear in the text, and pair it with the PyPI URL.
+%
+% ESCAPING.  URLs are detokenized when stored, so `_' and `~' in a link need no
+% escaping.  The displayed name, however, is ordinary text: an underscore in it
+% must be written `\_' both here and at the call site, since a bare `_' is a
+% subscript character and is invalid in text mode.  The registry keys on the
+% escaped form, so registering `is\_annotated' is looked up by
+% \package*{is\_annotated}.  (Hyphens need no such care.)
+
 % Scientific computing libraries and packages
-% Usage: \jax for name only, \jax* for name with link icon
-\makepackage{jax}{JAX}{https://github.com/google/jax}
-\makepackage{numpy}{NumPy}{https://github.com/numpy/numpy}
-\makepackage{scipy}{SciPy}{https://github.com/scipy/scipy}
+\registerpackagename{Astropy}{https://pypi.org/project/astropy}
+\registerpackagename{JAX}{https://pypi.org/project/jax}
+\registerpackagename{Matplotlib}{https://pypi.org/project/matplotlib}
+\registerpackagename{NumPy}{https://pypi.org/project/numpy}
+\registerpackagename{SciPy}{https://pypi.org/project/scipy}
 
 % `GalacticDynamics` packages
-\makepackage{unxt}{unxt}{https://github.com/GalacticDynamics/unxt}
-\makepackage{coordinax}{coordinax}{https://github.com/GalacticDynamics/coordinax}
-\makepackage{galax}{galax}{https://github.com/GalacticDynamics/galax}
-\makepackage{phasecurvefit}{phasecurvefit}{https://github.com/GalacticDynamics/phasecurvefit}
-\makepackage{quaxed}{quaxed}{https://github.com/GalacticDynamics/quaxed}
-\makepackage{quaxblocks}{quax-blocks}{https://github.com/GalacticDynamics/quax-blocks}
+\registerpackagename{unxt}{https://pypi.org/project/unxt}
+\registerpackagename{coordinax}{https://pypi.org/project/coordinax}
+\registerpackagename{galax}{https://pypi.org/project/galax}
+\registerpackagename{phasecurvefit}{https://pypi.org/project/phasecurvefit}
+\registerpackagename{quaxed}{https://pypi.org/project/quaxed}
+\registerpackagename{quax-blocks}{https://pypi.org/project/quax-blocks}
+\registerpackagename{dataclassish}{https://pypi.org/project/dataclassish}
+\registerpackagename{diffraxtra}{https://pypi.org/project/diffraxtra}
+\registerpackagename{is\_annotated}{https://pypi.org/project/is-annotated}
+\registerpackagename{jaxmore}{https://pypi.org/project/jaxmore}
+\registerpackagename{oncequinox}{https://pypi.org/project/oncequinox}
+\registerpackagename{zeroth}{https://pypi.org/project/zeroth}
 
 % `nstarman` Packages
-\makepackage{quax}{quax}{https://github.com/nstarman/quax}
+\registerpackagename{quax}{https://pypi.org/project/quax}
 
 
 \endinput

@@ -21,12 +21,18 @@
 % - Acronym Formatting: \acronym command for consistently formatted acronyms
 %   in small caps (e.g., \acronym{NASA})
 %
-% - Package References: \package command for rendering package names with
-%   optional hyperlinks (e.g., \package{siunitx}[https://ctan.org/pkg/siunitx])
+% - Package Link Registry: \registerpackagename stores a name -> URL lookup
+%   table, so a package's URL only needs to be written down once
+%   (e.g., \registerpackagename{siunitx}{https://ctan.org/pkg/siunitx})
 %
-% - Package Command Factory: \makepackage helper to generate starred package
-%   commands with built-in URLs (e.g., \makepackage{jax}{JAX}{url} creates
-%   \jax and \jax* with link support)
+% - Package References: \package command for rendering package names with
+%   optional hyperlinks (e.g., \package{siunitx}[https://ctan.org/pkg/siunitx]),
+%   or with the registered link via the starred form (\package*{siunitx})
+%
+% - Package Command Aliases: \makepackagealias helper to generate starred
+%   package commands with built-in URLs (e.g., \makepackagealias{jax}{JAX}{url}
+%   creates \jax and \jax* with link support).  Use sparingly -- see the note
+%   below the definition.
 %
 % This package requires hyperref and fontawesome for full functionality.
 %
@@ -39,21 +45,87 @@
 % Usage: \acronym{NASA} renders NASA in small caps
 \newcommand{\acronym}[1]{{\small{#1}}}
 
-% \package - Render package names with optional hyperlinks
-% Usage: \package{siunitx} renders in typewriter font
-%        \package{siunitx}[https://ctan.org/pkg/siunitx] adds a linked code icon
-\NewDocumentCommand{\package}{m o}{%
-  \texttt{#1}\;%
-  \IfNoValueTF{#2}{}{\href{#2}{\faCode}}%
-}
+% ----------------------------------------------------------------------------
+% Package references and the package-link registry
+% ----------------------------------------------------------------------------
+%
+% \registerpackagename{NAME}{URL}
+%   Records URL as the canonical link for NAME in a global lookup table, so
+%   the URL need only be written once (typically in the preamble).
+%   Usage: \registerpackagename{siunitx}{https://ctan.org/pkg/siunitx}
+%
+% \package{NAME}         -> typewriter name, no link
+% \package{NAME}[URL]    -> typewriter name + linked code icon, using URL
+% \package*{NAME}        -> typewriter name + linked code icon, using the URL
+%                          registered for NAME; if NAME was never registered,
+%                          falls back silently to the bare name
+% \package*{NAME}[URL]   -> an explicit URL always wins over the registry
+%
+% NOTE ON URLs: both routes detokenize the URL -- \registerpackagename on the
+% way into the lookup table, \package on the way out of the optional argument --
+% so characters such as `_` and `~` (common in repository links) survive intact.
+% Without this, an active `~' would reach \href as \nobreakspace and silently
+% corrupt the link.  Literal `%` and `#` must still be escaped (\% and \#) where
+% the URL is written, as everywhere else in LaTeX.
+%
+\ExplSyntaxOn
 
-% \makepackage - Helper to create starred package commands
-% E.g.: \makepackage{jax}{JAX}{https://github.com/google/jax}
-% Creates \jax (name only) and \jax* (name with link icon)
-\newcommand{\makepackage}[3]{%
-  \NewDocumentCommand{\csname #1\endcsname}{s}{%
+% The lookup table: package name -> URL.
+\prop_new:N \g_starkman_packagelink_prop
+\cs_generate_variant:Nn \prop_gput:Nnn { Nne }
+
+% \registerpackagename{NAME}{URL} - store URL under NAME.
+% The `e' expansion + \tl_to_str:n makes the URL's catcodes safe for \href.
+\NewDocumentCommand \registerpackagename { m m }
+  { \prop_gput:Nne \g_starkman_packagelink_prop {#1} { \tl_to_str:n {#2} } }
+
+% Internal renderer.  #1 = name, #2 = URL (empty => no icon).
+% The `V' variant takes the URL from the registry (already a string); the `ne'
+% variant is used for an explicit [URL], which must be strung first.
+\cs_new_protected:Npn \starkman_package_print:nn #1#2
+  { \texttt{#1} \tl_if_empty:nF {#2} { \; \href{#2}{\faCode} } }
+\cs_generate_variant:Nn \starkman_package_print:nn { nV, ne }
+
+% \package - Render a package name, optionally hyperlinked.
+\NewDocumentCommand \package { s m o }
+  {
+    \IfNoValueTF {#3}
+      {
+        \IfBooleanTF {#1}
+          {% starred: look the name up in the registry ...
+            \prop_get:NnNTF \g_starkman_packagelink_prop {#2} \l_tmpa_tl
+              { \starkman_package_print:nV {#2} \l_tmpa_tl }
+              { \starkman_package_print:nn {#2} { } }% ... or fall back to the name
+          }
+          { \starkman_package_print:nn {#2} { } }% unstarred, no URL: name only
+      }
+      {% explicit [URL] takes precedence; string it, exactly as the registry does
+        \starkman_package_print:ne {#2} { \tl_to_str:n {#3} }
+      }
+  }
+
+\ExplSyntaxOff
+
+% \makepackagealias - Create a shorthand control sequence for a package
+% E.g.: \makepackagealias{jax}{JAX}{https://pypi.org/project/jax}
+% Registers JAX -> URL and creates \jax (name only) and \jax* (name with link),
+% i.e. \jax is an alias for \package{JAX} and \jax* for \package*{JAX}.
+%
+% USE SPARINGLY.  Unlike \registerpackagename, this defines a new control
+% sequence, which can collide with commands from other packages, from the
+% document class, or from the document itself -- and \NewDocumentCommand will
+% abort with an error if the name is already taken.  Reserve it for the handful
+% of packages named often enough that the saved keystrokes are worth the risk,
+% and only for names you are confident are unclaimed.  For everything else,
+% register the name and write \package*{NAME}.
+%
+% The \expandafter is required: \NewDocumentCommand needs the *token* \jax, not
+% the three tokens `\csname jax\endcsname'.
+\newcommand{\makepackagealias}[3]{%
+  \registerpackagename{#2}{#3}%
+  \expandafter\NewDocumentCommand\csname #1\endcsname{s}{%
     \IfBooleanTF{##1}%
-      {\package{#2}[#3]}%
+      {\package*{#2}}%
       {\package{#2}}%
   }%
 }
