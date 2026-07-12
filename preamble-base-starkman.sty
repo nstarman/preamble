@@ -61,10 +61,12 @@
 %                          falls back silently to the bare name
 % \package*{NAME}[URL]   -> an explicit URL always wins over the registry
 %
-% NOTE ON URLs: \registerpackagename detokenizes the URL when storing it, so
-% characters such as `_` and `~` (common in repository links) survive the round
-% trip through the lookup table. Literal `%` and `#` must still be escaped
-% (\% and \#) at the point of registration, as everywhere else in LaTeX.
+% NOTE ON URLs: both routes detokenize the URL -- \registerpackagename on the
+% way into the lookup table, \package on the way out of the optional argument --
+% so characters such as `_` and `~` (common in repository links) survive intact.
+% Without this, an active `~' would reach \href as \nobreakspace and silently
+% corrupt the link.  Literal `%` and `#` must still be escaped (\% and \#) where
+% the URL is written, as everywhere else in LaTeX.
 %
 \ExplSyntaxOn
 
@@ -78,9 +80,11 @@
   { \prop_gput:Nne \g_starkman_packagelink_prop {#1} { \tl_to_str:n {#2} } }
 
 % Internal renderer.  #1 = name, #2 = URL (empty => no icon).
+% The `V' variant takes the URL from the registry (already a string); the `ne'
+% variant is used for an explicit [URL], which must be strung first.
 \cs_new_protected:Npn \starkman_package_print:nn #1#2
   { \texttt{#1} \tl_if_empty:nF {#2} { \; \href{#2}{\faCode} } }
-\cs_generate_variant:Nn \starkman_package_print:nn { nV }
+\cs_generate_variant:Nn \starkman_package_print:nn { nV, ne }
 
 % \package - Render a package name, optionally hyperlinked.
 \NewDocumentCommand \package { s m o }
@@ -95,7 +99,9 @@
           }
           { \starkman_package_print:nn {#2} { } }% unstarred, no URL: name only
       }
-      { \starkman_package_print:nn {#2} {#3} }% explicit [URL] takes precedence
+      {% explicit [URL] takes precedence; string it, exactly as the registry does
+        \starkman_package_print:ne {#2} { \tl_to_str:n {#3} }
+      }
   }
 
 \ExplSyntaxOff
