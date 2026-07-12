@@ -13,6 +13,7 @@
 
 \documentclass{article}
 \usepackage{preamble-math-starkman}
+\input{inspect}   % \SHOWBODY: see support/inspect.tex
 
 % Shallow dumps: we care about structure (is there a fraction?), not glyphs.
 \newcommand{\SHOWMATH}[1]{%
@@ -51,8 +52,8 @@
 }
 
 \TEST{other math commands}{
-  \show\pdf
-  \show\vec
+  \SHOWBODY\pdf   % parameterless: \show would print the kernel-dependent \long
+  \show\vec       % takes an argument, so \show is stable here
 }
 
 % ------------------------------------------------------------------- forms --

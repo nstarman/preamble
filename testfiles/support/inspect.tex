@@ -1,0 +1,29 @@
+% ============================================================================
+% inspect.tex -- kernel-independent macro inspection
+% ============================================================================
+%
+% \show prints a macro's *prefixes* as well as its body:
+%
+%   > \mas=\long macro:
+%   ->\unit {\milli \arcsecond }.
+%
+% Those prefixes are a kernel implementation detail, not our interface.  LaTeX
+% 2025-11 stopped declaring zero-argument \newcommand macros as \long, so the
+% very same \mas shows as `\long macro:' on an older kernel and plain `macro:'
+% on a newer one -- a golden-file difference that says nothing about this
+% package.  (Macros that take arguments are still \long, so \show is safe for
+% those; it is only the parameterless ones that drift.)
+%
+% \SHOWBODY prints just the replacement text, which is what we actually mean to
+% assert:
+%
+%   \SHOWBODY\mas   ->   BODY=[\unit {\milli \arcsecond }]
+%
+% It expands its argument exactly once, so nested commands stay as tokens and
+% the result is a faithful, stable picture of how the macro is defined.
+%
+% Only for parameterless macros: a macro taking arguments cannot be expanded
+% without supplying them.  Use \show for those.
+% ============================================================================
+
+\newcommand{\SHOWBODY}[1]{\typeout{BODY=[\detokenize\expandafter{#1}]}}

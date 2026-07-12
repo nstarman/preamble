@@ -52,14 +52,10 @@ l. ...}
 ============================================================
 TEST 4: other math commands
 ============================================================
-> \pdf=\long macro:
-->\textsl {pdf}.
-<argument>  \show \pdf 
-                       \show \vec 
-l. ...}
+BODY=[\textsl {pdf}]
 > \vec=\long macro:
 #1->\ensuremath {\mbs {#1}}.
-<argument>  \show \pdf \show \vec 
+<argument>  \SHOWBODY \pdf \show \vec 
 l. ...}
 ============================================================
 ============================================================

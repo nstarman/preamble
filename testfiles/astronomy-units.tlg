@@ -3,33 +3,15 @@ Don't change this file in any respect.
 ============================================================
 TEST 1: derived units are defined in terms of siunitx
 ============================================================
-> \mas=\long macro:
-->\unit {\milli \arcsecond }.
-<argument>  \show \mas 
-                       \show \kpc 
-l. ...}
-> \kpc=\long macro:
-->\unit {\kilo \parsec }.
-<argument>  \show \mas \show \kpc 
-l. ...}
+BODY=[\unit {\milli \arcsecond }]
+BODY=[\unit {\kilo \parsec }]
 ============================================================
 ============================================================
 TEST 2: survey and mission names
 ============================================================
-> \gaia=\long macro:
-->\textsl {Gaia}.
-<argument>  \show \gaia 
-                        \show \euclid \show \github 
-l. ...}
-> \euclid=\long macro:
-->\acronym {EUCLID}.
-<argument>  \show \gaia \show \euclid 
-                                      \show \github 
-l. ...}
-> \github=\long macro:
-->\textsl {GitHub}.
-<argument> ...w \gaia \show \euclid \show \github 
-l. ...}
+BODY=[\textsl {Gaia}]
+BODY=[\acronym {EUCLID}]
+BODY=[\textsl {GitHub}]
 ============================================================
 ============================================================
 TEST 3: glossary acronyms expand to their long forms

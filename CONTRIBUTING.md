@@ -66,4 +66,11 @@ Add `testfiles/<name>.lvt`, then generate its golden:
 make goldens
 ```
 
-An `.lvt` file is a small LaTeX document wrapped in `\input{regression-test}` / `\START` / `\END`, with assertions inside `\TEST{description}{...}`. Use `\show\cmd` for definitions, `\SHOWLINK{name}` for registry lookups, and `\input{instrument}` (after loading the package) whenever you want to assert on what `\package` renders.
+An `.lvt` file is a small LaTeX document wrapped in `\input{regression-test}` / `\START` / `\END`, with assertions inside `\TEST{description}{...}`. Use `\SHOWLINK{name}` for registry lookups, and `\input{instrument}` (after loading the package) whenever you want to assert on what `\package` renders.
+
+For definitions, mind which inspector you reach for:
+
+- **`\show\cmd`** for macros that take arguments, and for `\NewDocumentCommand` macros (whose argument specification is worth pinning).
+- **`\SHOWBODY\cmd`** (from `support/inspect.tex`) for **parameterless** macros.
+
+`\show` prints a macro's prefixes as well as its body, and those are a kernel detail rather than our interface: LaTeX 2025-11 stopped declaring zero-argument `\newcommand` macros as `\long`, so `\show\gaia` prints `\long macro:` on an older kernel and `macro:` on a newer one. That difference broke CI once already. `\SHOWBODY` prints only the replacement text — `BODY=[\textsl {Gaia}]` — which is what the test actually means to assert. Macros that take arguments are still `\long`, so `\show` is stable for them.

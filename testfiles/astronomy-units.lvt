@@ -5,19 +5,22 @@
 
 \documentclass{article}
 \usepackage{preamble-astronomy-starkman}
+\input{inspect}   % \SHOWBODY: see support/inspect.tex
 
 \begin{document}
 \START
 
+% \SHOWBODY, not \show: these are parameterless, and \show would also print the
+% \long prefix, which the LaTeX kernel stopped adding in 2025-11.
 \TEST{derived units are defined in terms of siunitx}{
-  \show\mas
-  \show\kpc
+  \SHOWBODY\mas
+  \SHOWBODY\kpc
 }
 
 \TEST{survey and mission names}{
-  \show\gaia
-  \show\euclid
-  \show\github
+  \SHOWBODY\gaia
+  \SHOWBODY\euclid
+  \SHOWBODY\github
 }
 
 \TEST{glossary acronyms expand to their long forms}{
