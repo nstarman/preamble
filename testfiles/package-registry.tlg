@@ -30,8 +30,7 @@ REGISTERED=[https://gamma.example]
 ============================================================
 TEST 6: the whole table: keys, values, and nothing else
 ============================================================
-The property list \g_starkman_packagelink_prop contains the pairs (without
-outer braces):
+The property list \g_starkman_packagelink_prop contains the pairs (without outer braces):
 >  {alpha}  =>  {https://alpha.example}
 >  {beta}  =>  {https://new.example}
 >  {JAX}  =>  {https://pypi.org/project/jax}

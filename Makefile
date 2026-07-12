@@ -5,7 +5,8 @@
 # output, which differs between TeX Live releases: goldens must be generated in
 # the same image CI uses, not against whatever TeX you happen to have installed.
 
-TEXLIVE_IMAGE ?= texlive/texlive:latest
+# Pinned to a release, and to the same image CI uses: see .github/workflows/ci.yml.
+TEXLIVE_IMAGE ?= texlive/texlive:TL2025-historic
 DOCKER_RUN = docker run --rm -v "$(CURDIR)":/work -w /work $(TEXLIVE_IMAGE)
 
 .PHONY: check links test goldens check-docker help

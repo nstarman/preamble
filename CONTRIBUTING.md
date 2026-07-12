@@ -52,9 +52,11 @@ Adding a package to the registry, for instance, means updating `astronomy-regist
 
 ## A note on TeX Live versions
 
-`.tlg` goldens record TeX's log output, which changes between TeX Live releases. They are therefore generated in a fixed image — `texlive/texlive:latest`, set in `Makefile` and `.github/workflows/ci.yml`, which must agree. `make goldens` and `make check-docker` both run in that image, so you can reproduce CI without pushing.
+`.tlg` goldens record TeX's log output, which changes between TeX Live releases. The suite is therefore pinned to **TeX Live 2025**: `texlive/texlive:TL2025-historic` in both `Makefile` and `.github/workflows/ci.yml`, matching the TeX that generated the checked-in goldens. (`-historic` tags are frozen with respect to TeX packages, so CI cannot go red because an upstream image was rebuilt.)
 
-If CI fails with diffs you cannot explain locally, your TeX is probably older or newer than the image. Run `make check-docker`.
+If your local TeX is TL2025, `make check` works directly and `l3build save …` produces goldens CI will accept. Otherwise use `make check-docker` and `make goldens`, which run in the pinned image regardless of what you have installed.
+
+To move to a newer release: bump the image in both files, run `make goldens`, and commit the diff — reading it, as always.
 
 ## Adding a test
 

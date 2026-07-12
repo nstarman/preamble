@@ -6,18 +6,23 @@ on:
   pull_request:
   workflow_dispatch:
 
-# Both jobs run inside the same TeX Live image.  Pin it: the golden .tlg files
-# record TeX's log output, which changes between TeX Live releases, so the image
-# used here and the one used by `make goldens' must agree.  When you bump this,
-# regenerate the goldens (`make goldens') in the same commit.
+# Both jobs run inside the same TeX Live image, pinned to a release rather than
+# `latest': the golden .tlg files record TeX's log output, which changes between
+# TeX Live releases.  The image here, the one in the Makefile, and the TeX that
+# generated the goldens must all agree -- currently TeX Live 2025.
+#
+# The `-historic' tags are frozen with respect to TeX packages (they are rebuilt
+# only for base-OS security updates), which is exactly what a golden-file suite
+# wants.  To move to a newer release: bump both `container:' lines below and
+# TEXLIVE_IMAGE in the Makefile, run `make goldens', and commit the result.
 env:
-  TEXLIVE_IMAGE: texlive/texlive:latest
+  TEXLIVE_IMAGE: texlive/texlive:TL2025-historic
 
 jobs:
   test:
     name: l3build check
     runs-on: ubuntu-latest
-    container: texlive/texlive:latest   # keep in sync with TEXLIVE_IMAGE above
+    container: texlive/texlive:TL2025-historic   # keep in sync with TEXLIVE_IMAGE
     steps:
       - uses: actions/checkout@v4
 
@@ -37,7 +42,7 @@ jobs:
   links:
     name: End-to-end link check
     runs-on: ubuntu-latest
-    container: texlive/texlive:latest   # keep in sync with TEXLIVE_IMAGE above
+    container: texlive/texlive:TL2025-historic   # keep in sync with TEXLIVE_IMAGE
     steps:
       - uses: actions/checkout@v4
 
