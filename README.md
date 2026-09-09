@@ -194,8 +194,8 @@ Code at \github
 % Glossary acronyms
 Along the \gls{LoS}         % line-of-sight
 The \gls{CoM} of the system % center of mass
-\gls{CDM} model             % Cold Dark Matter
-The \gls{LCDM} model        % Λ Cold Dark Matter
+\gls{CDM} model             % cold dark matter
+The \gls{LCDM} model        % Λ cold dark matter
 ```
 
 ## Tests
