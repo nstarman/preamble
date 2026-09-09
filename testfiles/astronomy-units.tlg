@@ -10,7 +10,7 @@ BODY=[\unit {\kilo \parsec }]
 TEST 2: survey and mission names
 ============================================================
 BODY=[\textsl {Gaia}]
-BODY=[\acronym {EUCLID}]
+BODY=[\textsl {Euclid}]
 BODY=[\textsl {GitHub}]
 ============================================================
 ============================================================
