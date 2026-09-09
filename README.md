@@ -159,7 +159,7 @@ Position: \SI{100}{\mas}    % 100 mas
 
 % Survey names
 Data from \gaia             % Gaia (italic)
-The \euclid{} mission       % EUCLID (acronym formatting)
+The \euclid{} mission       % Euclid (italic)
 
 % Software packages: registered names, used via \package / \package*
 % (the starred form appends an icon linking to the package's PyPI page)

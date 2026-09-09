@@ -32,8 +32,8 @@
 }
 
 \TEST{the astronomy module pulls in the base module}{
-  % \acronym comes from preamble-base-starkman; \euclid is built on it, so a
-  % broken dependency would surface here rather than at some user's first build.
+  % \acronym and \package come from preamble-base-starkman, so a broken
+  % dependency would surface here rather than at some user's first build.
   \show\acronym
   \show\package
 }
