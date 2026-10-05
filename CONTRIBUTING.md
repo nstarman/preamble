@@ -50,6 +50,20 @@ Read the resulting diff before committing it — **that diff is the behavioural 
 
 Adding a package to the registry, for instance, means updating `astronomy-registry.tlg` (new `REGISTERED=` line), adding the name to `tests/links/links.tex`, and updating `expected-uris.txt`.
 
+## Cutting a release
+
+Releases are made by pushing a tag; the **Release** workflow does the rest (it runs `l3build check` and the link check, then publishes a GitHub Release with the four `.sty` files and `preamble-starkman.zip`).
+
+```bash
+git checkout main && git pull
+git tag v0.1.1
+git push origin v0.1.1
+```
+
+- Tag a commit whose CI on `main` is green, and use `vMAJOR.MINOR.PATCH`.
+- Push the tag only: don't also create the release in the GitHub web UI.
+- If the workflow fails, fix it and move the tag with `git tag -f vX.Y.Z <commit> && git push --force origin vX.Y.Z`. Only do this while the release has no assets that anyone could have downloaded.
+
 ## A note on TeX Live versions
 
 `.tlg` goldens record TeX's log output, which changes between TeX Live releases. The suite is therefore pinned to **TeX Live 2025**: `texlive/texlive:TL2025-historic` in both `Makefile` and `.github/workflows/ci.yml`, matching the TeX that generated the checked-in goldens. (`-historic` tags are frozen with respect to TeX packages, so CI cannot go red because an upstream image was rebuilt.)
