@@ -21,10 +21,10 @@ env:
 jobs:
   test:
     name: l3build check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: texlive/texlive:TL2025-historic   # keep in sync with TEXLIVE_IMAGE
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run the test suite
         run: l3build check
@@ -33,7 +33,7 @@ jobs:
       # far more useful than scrolling the job output.
       - name: Upload failure diffs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: l3build-diffs
           path: build/test/*.diff
@@ -41,10 +41,10 @@ jobs:
 
   links:
     name: End-to-end link check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: texlive/texlive:TL2025-historic   # keep in sync with TEXLIVE_IMAGE
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Asserts on the /URI annotations in a real PDF -- i.e. on the links a
       # reader would actually click, rather than on what \package hands \href.
