@@ -53,6 +53,7 @@ d=$(kpsewhich -var-value TEXMFHOME)/tex/latex/preamble-starkman
 mkdir -p "$d" && cd "$d"
 curl -fsSL https://github.com/nstarman/preamble/releases/latest/download/preamble-starkman.zip -o p.zip
 unzip -o p.zip && rm p.zip
+kpsewhich preamble-starkman.sty   # should print the installed path
 ```
 
 To pin a version, use `releases/download/vX.Y.Z/preamble-starkman.zip` instead of `releases/latest/download/...`.
