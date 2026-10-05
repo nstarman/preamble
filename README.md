@@ -44,6 +44,20 @@ The preamble system consists of four main packages:
    - AASTeX-compatible siunitx configuration
    - Dependencies: All above packages
 
+## Installation
+
+Download a release (the `.sty` files only, no tests) into your personal TeX tree, once per machine:
+
+```bash
+d=$(kpsewhich -var-value TEXMFHOME)/tex/latex/preamble-starkman
+mkdir -p "$d" && cd "$d"
+curl -fsSL https://github.com/nstarman/preamble/releases/latest/download/preamble-starkman.zip -o p.zip
+unzip -o p.zip && rm p.zip
+```
+
+To pin a version, use `releases/download/vX.Y.Z/preamble-starkman.zip` instead of `releases/latest/download/...`.
+On Overleaf or for an arXiv submission, upload the four `.sty` files from the release page alongside your `.tex`.
+
 ## Usage
 
 ### Option 1: Load Everything

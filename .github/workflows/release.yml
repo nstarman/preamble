@@ -1,7 +1,7 @@
 name: Release
 
 # Push a tag like `v0.1.0' to publish a release containing only the .sty files
-# (no tests, no goldens): the four files individually, plus one zip of all four.
+# (no tests, no goldens) once the test suite passes: the four files individually, plus one zip of all four.
 on:
   push:
     tags: ["v*"]
@@ -10,7 +10,16 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: texlive/texlive:TL2025-historic   # keep in sync with ci.yml
+    steps:
+      - uses: actions/checkout@v4
+      - run: l3build check
+      - run: ./tools/check-links.sh
+
   release:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
