@@ -11,18 +11,18 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: texlive/texlive:TL2025-historic   # keep in sync with ci.yml
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: l3build check
       - run: ./tools/check-links.sh
 
   release:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Zip the style files
         run: zip preamble-starkman.zip *.sty
       - name: Create the release
