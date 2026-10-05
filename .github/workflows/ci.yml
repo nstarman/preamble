@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-24.04
     container: texlive/texlive:TL2025-historic   # keep in sync with TEXLIVE_IMAGE
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Run the test suite
         run: l3build check
@@ -33,7 +33,7 @@ jobs:
       # far more useful than scrolling the job output.
       - name: Upload failure diffs
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: l3build-diffs
           path: build/test/*.diff
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-24.04
     container: texlive/texlive:TL2025-historic   # keep in sync with TEXLIVE_IMAGE
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Asserts on the /URI annotations in a real PDF -- i.e. on the links a
       # reader would actually click, rather than on what \package hands \href.
