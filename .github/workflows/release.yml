@@ -28,4 +28,8 @@ jobs:
       - name: Create the release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --generate-notes preamble-starkman.zip *.sty
+        # A release may already exist (e.g. created in the web UI when tagging):
+        # then just attach the assets to it.
+        run: |
+          gh release create "$GITHUB_REF_NAME" --generate-notes preamble-starkman.zip *.sty \
+            || gh release upload "$GITHUB_REF_NAME" --clobber preamble-starkman.zip *.sty
